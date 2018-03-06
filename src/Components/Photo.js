@@ -17,7 +17,7 @@ class Photo extends Component {
 }
 
 Photo.propTypes = {
-  posts: PropTypes.object.isRequired,
+  post: PropTypes.object.isRequired,
   onRemovePhoto: PropTypes.func.isRequired
 }
 
