@@ -11,7 +11,7 @@ const Photowall = (props) => {
         .sort((x,y) => {
           return y.id - x.id
         })
-        .map((post, index) => <Photo post={post} key={post.id} {...props} index={index} />)}
+        .map((post, index) => <Photo post={post} key={index} {...props} index={index} />)}
     </div>
   </div>
 }
