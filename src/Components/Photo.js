@@ -16,6 +16,13 @@ const Photo = (props) => {
           props.removePost(props.index)
           props.history.push("/")
         } }>Remove</button>
+      <Link to={`/single/${post.id}`} className="button">
+        <div className="comment-count">
+          <div className="speech-bubble"></div>
+          {/* if comments are present write length else 0 */}
+          {props.comments[post.id] ? props.comments[post.id].length : 0}
+        </div>
+      </Link>
     </div>
   </figure>
 }
