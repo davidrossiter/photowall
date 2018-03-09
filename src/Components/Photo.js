@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
 
 const Photo = (props) => {
   const post = props.post;
@@ -13,7 +13,7 @@ const Photo = (props) => {
     </figcaption>
     <div className="button-container">
       <button className="remove-button" onClick={ () => {
-          props.removePost(props.index)
+          props.startRemovingPost(props.index, post.id)
           props.history.push("/")
         } }>Remove</button>
       <Link to={`/single/${post.id}`} className="button">

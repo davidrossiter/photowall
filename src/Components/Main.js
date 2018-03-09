@@ -6,8 +6,15 @@ import Single from './Single';
 
 class Main extends Component {
 
+  state = { loading: true }
+
   componentDidMount() {
     this.props.startLoadingPosts()
+    /* photo states are not global, so don't just use redux set the state so when the post is loaded independantly it shows up */
+    .then(() => {
+      this.setState({loading: false})
+    })
+    this.props.startLoadingComments()
   }
 
   render() {
@@ -30,7 +37,7 @@ class Main extends Component {
           )} />
         <Route path="/single/:id" render={(params) => (
             /*params must come after this.props*/
-            <Single {...this.props} {...params} />
+            <Single loading={this.state.loading} {...this.props} {...params} />
           )} />
         </div>
     )

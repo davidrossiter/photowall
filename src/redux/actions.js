@@ -22,11 +22,70 @@ export const startLoadingPosts = () => {
       })
       dispatch(loadPosts(posts))
     })
+    .catch((error) => {
+      console.log(error)
+    })
+  }
+}
+
+export const startRemovingPost = (index, id) => {
+  const updates = {
+    [`posts/${id}`]: null,
+    [`comments/${id}`]: null
+  }
+  /* this specifies the paths that we want to update to null
+  (basically delete)
+  we're navigating to the post with id we clicked remove on,
+  as well as the comments belonging to that post, with
+  that same id. */
+  return (dispatch) => {
+    return database.ref().update(updates)
+    .then(() => {
+      dispatch(removePost(index))
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }
+  /*finally, we're updating the database from its root node, such
+  that it navigates to the posts path, as well as the comments
+   path, and  sets them to null ! (in other words, deletes both
+  of them).
+  After deleting the post and its comments from the database,
+  like always, we're updating
+  the ui by dispatching an action to our reducer
+  inside of .then() */
+}
+
+export const startAddingComment = (comment, postId) => {
+  return (dispatch) => {
+    return database.ref(`comments/${postId}`).push(comment)
+    .then(() => {
+      dispatch(addComment(comment, postId))
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }
+}
+
+export const startLoadingComments = () => {
+  return(dispatch) => {
+    return database.ref("comments").once("value")
+    .then((snapshot) => {
+      let comments = {}
+      snapshot.forEach((childSnapshot) => {
+        comments[childSnapshot.key] = Object.values(childSnapshot.val())
+      })
+      dispatch(loadComments(comments))
+    })
+    .catch((error) => {
+      console.log(error)
+    })
   }
 }
 
 //remove action
-
 export const removePost = (index) => {
   return {
     type: "REMOVE_POST",
@@ -57,5 +116,12 @@ export const loadPosts = (posts) => {
   return {
     type: "LOAD_POSTS",
     posts
+  }
+}
+
+export const loadComments = (comments) => {
+  return {
+    type: "LOAD_COMMENTS",
+    comments
   }
 }

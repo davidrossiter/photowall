@@ -11,13 +11,18 @@ class Single extends Component {
     /* If no comments set to empty array, otheriwse we map over undefined and crsh */
     const comments = this.props.comments[id] || []
     const index = this.props.posts.findIndex((post) => post.id === id)
-    return (<div className="single-photo">
-
-      <Photo post={post} {...this.props} index={index} />
-      <Comments addComment={this.props.addComment} comments={comments} id={id} />
-
-      </div>
-    )
+    if (this.props.loading === true) {
+      return <div className="loader"> ...loading </div>
+    } else if (post) {
+      return (<div className="single-photo">
+        <Photo post={post} {...this.props} index={index} />
+        <Comments startAddingComment={this.props.startAddingComment} comments={comments} id={id} />
+        </div>
+      )
+    } else {
+      /* If post is deleted and user goes back say post not found, instesd of error */
+      return <div className="loader">Post not found</div>
+    }
   }
 }
 
